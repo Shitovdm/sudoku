@@ -1,0 +1,21 @@
+table{
+	border-collapse: collapse;
+	margin-top: -70px;
+}
+td{
+	background-color: #808080;
+	width: 20px;
+	height: 20px;
+}
+input{
+	width: 20px;
+	height: 20px;
+	text-align: center;
+}
+	.incorrect-cell{
+	background-color: red;
+}
+#CalcButton{
+	margin-top: 50px;
+	margin-left: 280px;
+}
