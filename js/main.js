@@ -5,43 +5,30 @@ $( document ).ready(function() {
 	$('#workspace').append('<tr>');
 	for ( var i = 1; i <= 81; i++ ) {
 		if ( i % 9 == 1 ) {
-			$('<tr id = "row-'+(Math.ceil( i / 9 ) )+'">').appendTo('#workspace');
+			$('<tr id = "row-'+(Math.ceil(i/9) )+'">').appendTo('#workspace');
 		}
-		$('#row-' + (Math.ceil( i / 9 ))).append('<td id = "cell-'+i+'"><input type="text" name='+i+'></td>')
+		$('#row-' + (Math.ceil(i/9))).append('<td id="cell-' + i + '"><input type="text" name=' + i + '><\/td>')
 	}
 
-	// Присваивание каждой клетке параметров (принадлежность к строке, столбцу и квадрату(3х3))
+	// Присваивание каждой клетке параметров (принадлежность к строке, столбцу и квадрату(3х3)).
+	// Строка и колонка.
 	for ( var i = 0; i < 9; i++ ) {
 		for ( var j = 0; j < 9; j++ ) {
-			$('#cell-' + ( (i*9+1)+j ) + ' input').attr('row', i+1);
-			$('#cell-' + ( (j*9+1)+i ) + ' input').attr('col', i+1);
+			$('#cell-' + ( ((i*9)+1)+j ) + ' input').attr('row',i+1);
+			$('#cell-' + ( ((j*9)+1)+i ) + ' input').attr('col',i+1);
 		}
 	}
-	var n = l = 1;
-	var o = v = 0;
-	for ( var x = 1; x <= 55; x+=27 ) {
-		var r = x;
-		for( var k = r; k < 8+r; k+=3 ) {
+	// Номер квадрата.
+	for ( var x = r = square = 1; x <= 55; x+=27,r = x ) {
+		for( var k = r; k < 8+r; k+=3, square++ ) {
 			for ( var i = 1; i <= 3; i++ ) {
 				for ( var j = -1; j <= 17; j+=9 ) {
-					$("#cell-" + ( i+k+j ) + " input").val( (n+o) );
-				}
-				// console.log(i+k-1,i+k+9-1,i+k+18-1);
-			}
-			
-			//if()
-			//v=Math.floor(o / 3)+1;
-			if ( o % 3 != 0 ) {
-				console.log(o % 3);
-				o++;
-			}else{
-				if((o==0)||(o==3)||(o==6)){
-					o++;
+					$("#cell-" + ( i+k+j ) + " input").attr("square",square);
 				}
 			}
 		}
-		n+=1;
 	}
+	
 });
 
 
@@ -52,9 +39,7 @@ function GetValues() {
 		$("#cell-" + (i+1) + " input").removeClass("incorrect-cell");
 		Values.push($("#cell-" + i + " input").val());
 	}
-	
 	console.log("Flag = " + CellsDataCheck(Values));
-
 }
 
 // Проверка введенных данных ( целые числа от 0 до 9 )
