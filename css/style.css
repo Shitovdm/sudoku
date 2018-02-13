@@ -12,10 +12,16 @@ input{
 	height: 20px;
 	text-align: center;
 }
-	.incorrect-cell{
+.incorrect-cell{
 	background-color: red;
 }
 #CalcButton{
 	margin-top: 50px;
 	margin-left: 280px;
+}
+#OutputField{
+	width: 246px;
+	height: 100px;
+	margin-top: 20px;
+	overflow-y: hidden;
 }
