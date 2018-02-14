@@ -118,16 +118,29 @@ function CellsDataCoincidence(CellsData) {
 		}
 	}
 
-	// for ( var x = r = square = 1; x <= 55; x+=27,r = x ) {
-	// 	for( var k = r; k < 8+r; k+=3, square++ ) {
-	// 		for ( var i = 1; i <= 3; i++ ) {
-	// 			for ( var j = -1; j <= 17; j+=9 ) {
-	// 				$('#cell-' + ( i+k+j )).attr('square',square);
-	// 			}
-	// 		}
-	// 	}
-	// }
+	// Квадрат (3х3)
+	for ( var i = 1; i <= 9; i++) {
+		var TempArray = $('td[square = '+ i +']').children('input');
+		for ( var j = 0; j < TempArray.length; j++ ) {
+			for ( k = 1; k <= 9; k++ ) {
+				if ( $(TempArray[j]).val() != "" && j != k) {
+					if ( +$(TempArray[j]).val() != +$(TempArray[k]).val() ) {
 
+					} else {
+						InputError(($(TempArray[j]).attr('name')));
+						InputError(($(TempArray[k]).attr('name')));
+
+						break;
+					}
+				} 
+			}
+		}
+	}
 }
 
 
+// Находим промежуточные решения ( возможные значения для каждой клетки )
+
+// function TemporarySolutions() {
+
+// }
