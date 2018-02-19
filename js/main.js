@@ -34,12 +34,12 @@ $( document ).ready(function() {
 
 // Получение введенных данных
 function GetValues() {
-	var Values = new Array();
+	var CellsData = new Array();
 	for ( var i = 1; i <= 81; i++) {
 		$("#cell-" + (i+1) + " input").removeClass("incorrect-cell");
-		Values.push($("#cell-" + i + " input").val());
+		CellsData.push($("#cell-" + i + " input").val());
 	}
-	console.log("Flag = " + CellsDataCheck(Values));
+	CellsDataCheck(CellsData);
 }
 
 // Функция вывода ошибки
@@ -50,8 +50,6 @@ function InputError(NumberOfIncorrectCell) {
 	} else {
 		$('#OutputField').val("Ошибка ввода данных!");
 	}
-
-	console.log("Error!");
 }
 
 // Проверка введенных данных ( целые числа от 0 до 9 )
@@ -81,14 +79,16 @@ function CellsDataCheck(CellsData) {
 		}
 	}
 	if ( Flag ) {
-		console.log(CellsData);
+		//console.log(CellsData);
 		CellsDataCoincidence(CellsData);
 	}
+	//console.log("Flag = ", Flag);
 	return Flag;
 }
 
 // Проверка введенных данных на совпадение в строке, столбце или квадрате(3х3)
 function CellsDataCoincidence(CellsData) {
+	var Flag_1 = true;
 	var num = 0;
 	for ( var i = 0; i < 9; i++ ) { 
 		for ( var j = 1; j < 10; j++ ) { 
@@ -102,14 +102,16 @@ function CellsDataCoincidence(CellsData) {
 
 						} else {
 							InputError(num);
+							var Flag_1 = false;
 							break;
 						}
 
 						if ( +$('input[name = '+ num +']').val() !== +$('input[name = '+ y +']').val() ) { // Совпадение в столбце
-
+							
 						} else {
 							InputError(num);
 							InputError(y);
+							var Flag_1 = false;
 							break;
 						}
 					}
@@ -125,22 +127,51 @@ function CellsDataCoincidence(CellsData) {
 			for ( k = 1; k <= 9; k++ ) {
 				if ( $(TempArray[j]).val() != "" && j != k) {
 					if ( +$(TempArray[j]).val() != +$(TempArray[k]).val() ) {
-
+						
 					} else {
 						InputError(($(TempArray[j]).attr('name')));
 						InputError(($(TempArray[k]).attr('name')));
-
+						var Flag_1 = false;
 						break;
 					}
 				} 
 			}
-		}
+		}		
 	}
+	//console.log("Flag_1 = ", Flag_1);
+	if ( Flag_1 ) {
+		TemporarySolutions(CellsData);
+	}
+	return Flag_1;
 }
 
 
 // Находим промежуточные решения ( возможные значения для каждой клетки )
+function TemporarySolutions(CellsData) {
+	//Создание массива
+	var way = ['row', 'col', 'square'];
+	var TempSols = new Array();
+	for ( var i = 1; i <= 9; i++ ) {
+		TempSols[i] = [];
+		for ( var j = 1; j <= 9; j++ ) {
+			if ( $('[row = '+ i +'][col = '+ j +']').children('input').val() == "" ) {
+				TempSols[i][j] = [1,2,3,4,5,6,7,8,9];
+				for ( var w = 0; w < 3; w++ ) {
+					for ( x = 1; x <= 9; x++ ) {
+						if ( $('['+way[w]+'='+x+' ]').children('input').val() != "" ) {
+							for ( var k = 0; k < 9; k++ ) {
+								if ( TempSols[i][j][k] == +$('['+way[w]+'='+x+']').children('input').val() ) {
+									// TempSols[i][j].splice(k, 1);
+									console.log("Строка = ", i, " Ячейка = ", j, " Удаляем: ", k+1, " Обход = ", way[w]);
+								}	
+							}	
+						}
+					}
+				}	
+			}
+		}
+	}
+	console.log(TempSols);
+	
+}
 
-// function TemporarySolutions() {
-
-// }
