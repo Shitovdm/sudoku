@@ -149,29 +149,68 @@ function CellsDataCoincidence(CellsData) {
 // Находим промежуточные решения ( возможные значения для каждой клетки )
 function TemporarySolutions(CellsData) {
 	//Создание массива
-	var way = ['row', 'col', 'square'];
 	var TempSols = new Array();
 	for ( var i = 1; i <= 9; i++ ) {
 		TempSols[i] = [];
 		for ( var j = 1; j <= 9; j++ ) {
 			if ( $('[row = '+ i +'][col = '+ j +']').children('input').val() == "" ) {
 				TempSols[i][j] = [1,2,3,4,5,6,7,8,9];
-				for ( var w = 0; w < 3; w++ ) {
-					for ( x = 1; x <= 9; x++ ) {
-						if ( $('['+way[w]+'='+x+' ]').children('input').val() != "" ) {
-							for ( var k = 0; k < 9; k++ ) {
-								if ( TempSols[i][j][k] == +$('['+way[w]+'='+x+']').children('input').val() ) {
-									// TempSols[i][j].splice(k, 1);
-									console.log("Строка = ", i, " Ячейка = ", j, " Удаляем: ", k+1, " Обход = ", way[w]);
-								}	
-							}	
-						}
-					}
-				}	
+                                for ( x = 1; x <= 9; x++ ) {
+                                        //  Временные решения по строкам.
+                                        if ( $('[row='+i+' ][col='+x+']').children('input').val() != "" ) {
+                                                for ( var k = 0; k < 9; k++ ) {
+                                                        if ( TempSols[i][j][k] == +$('[row='+i+' ][col='+x+']').children('input').val() ) {
+                                                                TempSols[i][j].splice(k, 1);
+                                                                break;
+                                                        }	
+                                                }	
+                                        }
+                                        //  Временные решения по столбцам.
+                                        if( $('[row='+x+' ][col='+j+']').children('input').val() != "" ){
+                                            for ( var k = 0; k < 9; k++ ) {
+                                                        if ( TempSols[i][j][k] == +$('[row='+x+' ][col='+j+']').children('input').val() ) {
+                                                                TempSols[i][j].splice(k, 1);
+                                                                break;
+                                                        }	
+                                                }	
+                                        }      
+                                }	
 			}
 		}
 	}
-	console.log(TempSols);
+        
+        // Приводим массив TempSols[i][j] к массиву GlobalTempSols[i].
+        var GlobalTempSols = new Array();
+        var counter = 0;
+        for(var i = 1; i <= 9; i++){
+            for(var j = 1; j <= 9; j++){
+                GlobalTempSols[counter] = TempSols[i][j];
+                counter++;
+            }
+        }
+        
+        //  Добавляем временные решения по квадратам.
+        for(var i = 1; i <= 9; i++){  //  Перебираем все квадраты.
+            var square = $('[square = 1]').children('input');   //  Получаем в массив все элементы с атрибутом square = i.
+            for(var n = 0; n < square.length; n++){ //  Обходим все элементы с атрибутом square = i.
+                if( +$(square[n]).val() == "" ){  //  Если пользователь не ввел в эту ячейку значение.
+                    for(k = 0; k < 9; k++){ //  Обходим еще раз все элементы с атрибутом square = i, теперь только те, которые требуют временного решения.
+                        if( +$(square[k]).val() != "" ){  //  Ищем все заполненные ячейки в квадрате, чтобы достать из них значение которое необходимо удалить из всех незаполненных ячеек.
+                            // Удаляем из локального массива временных решений значения $(square[k]).val() у ячеек $(square[n]).attr('name').
+                            for(var l = 0; l < 9; l++){ //  Ищем ключ элемента, который необходимо удалить.
+                                if( GlobalTempSols[(+$(square[n]).attr('name') - 1)][l] == +$(square[k]).val() ){ //  Если значение которое нужно удалить имеется в массиве временных решений для ячейки.
+                                    GlobalTempSols[(+$(square[n]).attr('name') - 1)].splice(l, 1);
+                                    break;  // Сокращаем время выполнения.
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        
+        // Аларм!!! Нумерация в массиве сдвинута на -1, так как массив нумеруется с 0. Значения атрибута name у тега input не совпадает с индексом временного решения для соответствующей ячейки.
+	console.log(GlobalTempSols);
 	
 }
 
