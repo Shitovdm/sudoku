@@ -1,27 +1,75 @@
 table{
 	border-collapse: collapse;
-	margin-top: -70px;
+	margin: auto;
+	margin-top: 20px;
 }
 td{
 	background-color: #808080;
-	width: 20px;
-	height: 20px;
+	width: 30px;
+	height: 30px;
+}
+td:nth-child(3), td:nth-child(6){
+	border-right: 2px solid #808080;
+}
+tr:nth-child(5), tr:nth-child(8){
+	border-top: 2px solid #808080;
+}
+td:nth-child(1){
+	border-left: 4px solid #808080;
+}
+td:nth-child(9){
+	border-right: 4px solid #808080;
+}
+tr:nth-child(10){
+	border-bottom: 4px solid #808080;
+}
+tr:nth-child(1){
+	border-bottom: 4px solid #808080;
 }
 input{
-	width: 20px;
-	height: 20px;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	font-family: 'Quicksand', sans-serif;
+	color: #272822;
+	font-size: 25px;
+	font-weight: 500;
+}
+input:hover, input:focus{
+	background-color: #C5FCED;
+}
+
+.incorrect-cell{
+	background-color: #FF4136;
+}
+.incorrect-cell:hover{
+	background-color: #FF4136;
+}
+#space{
 	text-align: center;
 }
-.incorrect-cell{
-	background-color: red;
-}
 #CalcButton{
-	margin-top: 50px;
-	margin-left: 280px;
+	border-radius: 2px;
+	border: 2px solid #808080;
+	cursor: pointer;
+	background-color: white;
+	margin-top: 20px;
+	font-family: 'Quicksand', sans-serif;
+	color: #272822;
+	font-size: 25px;
+	font-weight: 500;
+}
+#CalcButton:hover{
+	background-color: #C5FCED;
 }
 #OutputField{
-	width: 246px;
-	height: 100px;
+	border-radius: 2px;
+	border: 2px solid #808080;
+	min-width: 240px;
+	min-height: 70px;
 	margin-top: 20px;
 	overflow-y: hidden;
+	color: #272822;
+	font-size: 20px;
+	font-weight: 500;
 }
